@@ -1,19 +1,21 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
+import dynamic from 'next/dynamic'
 import { skillsData } from "@/data/static/skills-data"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
 import { Shuffle } from "lucide-react"
+
+// Dynamically import heavy components
+const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div))
+const Button = dynamic(() => import('@/components/ui/button').then(mod => mod.Button))
 
 interface SkillCardProps {
   name: string
   level: number
   category: string
   index: number
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef: React.RefObject<HTMLDivElement | null>
   shuffleKey: number
 }
 
@@ -39,41 +41,40 @@ const SkillCard = ({ name, level, category, index, containerRef, shuffleKey }: S
 
   // Generate random position on shuffle with collision detection
   const generateRandomPosition = () => {
-    if (containerRef.current) {
-      const containerRect = containerRef.current.getBoundingClientRect()
-      const maxX = Math.max(0, containerRect.width - cardSize.width - 40)
-      const maxY = Math.max(0, containerRect.height - cardSize.height - 80)
+    if (!containerRef.current) return { x: 0, y: 0 }
+    
+    const containerRect = containerRef.current.getBoundingClientRect()
+    const maxX = Math.max(0, containerRect.width - cardSize.width - 40)
+    const maxY = Math.max(0, containerRect.height - cardSize.height - 80)
 
-      // Get all existing positions from other cards
-      const existingCards = containerRef.current.querySelectorAll("[data-skill-card]")
-      const existingPositions: { x: number; y: number; width: number; height: number }[] = []
+    // Get all existing positions from other cards
+    const existingCards = containerRef.current.querySelectorAll("[data-skill-card]")
+    const existingPositions: { x: number; y: number; width: number; height: number }[] = []
 
-      existingCards.forEach((card) => {
-        const rect = card.getBoundingClientRect()
-        const containerRect = containerRef.current!.getBoundingClientRect()
-        existingPositions.push({
-          x: rect.left - containerRect.left,
-          y: rect.top - containerRect.top,
-          width: rect.width,
-          height: rect.height,
-        })
+    existingCards.forEach((card) => {
+      const rect = card.getBoundingClientRect()
+      const containerRect = containerRef.current!.getBoundingClientRect()
+      existingPositions.push({
+        x: rect.left - containerRect.left,
+        y: rect.top - containerRect.top,
+        width: rect.width,
+        height: rect.height,
       })
+    })
 
-      // Try to find a non-overlapping position
-      let attempts = 0
-      let newPosition = { x: 0, y: 0 }
+    // Try to find a non-overlapping position
+    let attempts = 0
+    let newPosition = { x: 0, y: 0 }
 
-      do {
-        newPosition = {
-          x: Math.random() * maxX + 20,
-          y: Math.random() * maxY + 20,
-        }
-        attempts++
-      } while (attempts < 50 && hasOverlap(newPosition, existingPositions))
+    do {
+      newPosition = {
+        x: Math.random() * maxX + 20,
+        y: Math.random() * maxY + 20,
+      }
+      attempts++
+    } while (attempts < 50 && hasOverlap(newPosition, existingPositions))
 
-      return newPosition
-    }
-    return { x: 0, y: 0 }
+    return newPosition
   }
 
   // Check if a position overlaps with existing cards
@@ -99,7 +100,7 @@ const SkillCard = ({ name, level, category, index, containerRef, shuffleKey }: S
   }, [shuffleKey, containerRef, cardSize.width, cardSize.height])
 
   return (
-    <motion.div
+    <MotionDiv
       ref={cardRef}
       className="absolute select-none touch-none"
       data-skill-card="true"
@@ -155,7 +156,7 @@ const SkillCard = ({ name, level, category, index, containerRef, shuffleKey }: S
       >
         {/* Category tooltip */}
         {showCategory && (
-          <motion.div
+          <MotionDiv
             className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50"
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
@@ -163,7 +164,7 @@ const SkillCard = ({ name, level, category, index, containerRef, shuffleKey }: S
           >
             {category}
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-black/90" />
-          </motion.div>
+          </MotionDiv>
         )}
 
         <h3
@@ -185,7 +186,7 @@ const SkillCard = ({ name, level, category, index, containerRef, shuffleKey }: S
           <span className="text-xs font-medium text-blue-200 ml-1 w-8 text-right">{level}%</span>
         </div>
       </div>
-    </motion.div>
+    </MotionDiv>
   )
 }
 
@@ -215,7 +216,7 @@ export function SkillsSection() {
         <div className="grid lg:grid-cols-12 gap-8">
           {/* Left column - Text content */}
           <div className="lg:col-span-3 space-y-6">
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -227,7 +228,7 @@ export function SkillsSection() {
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {skillsData.stats.map((stat, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={index}
                     className="text-center p-4 bg-gray-900/50 rounded-lg border border-gray-700 card-hover"
                     initial={{ opacity: 0, y: 20 }}
@@ -237,7 +238,7 @@ export function SkillsSection() {
                   >
                     <div className={`text-2xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
                     <div className="text-sm text-gray-400">{stat.label}</div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
               </div>
 
@@ -249,12 +250,12 @@ export function SkillsSection() {
                 <Shuffle className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300" />
                 Shuffle Skills
               </Button>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right column - Interactive skills */}
           <div className="lg:col-span-9">
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
@@ -279,7 +280,7 @@ export function SkillsSection() {
                   Drag to move skills • Hover to see categories
                 </p>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
         </div>
       </div>

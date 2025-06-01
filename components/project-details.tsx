@@ -3,12 +3,21 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import dynamic from 'next/dynamic'
+//import { Button } from "@/components/ui/button"
+//import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+//import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import type { Project } from "@/data/static/project-details"
-import { motion } from "framer-motion"
+
+// Dynamically import heavy components
+const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div))
+const Button = dynamic(() => import('@/components/ui/button').then(mod => mod.Button))
+const Card = dynamic(() => import('@/components/ui/card').then(mod => mod.Card))
+const CardContent = dynamic(() => import('@/components/ui/card').then(mod => mod.CardContent))
+const CardHeader = dynamic(() => import('@/components/ui/card').then(mod => mod.CardHeader))
+const CardTitle = dynamic(() => import('@/components/ui/card').then(mod => mod.CardTitle))
+const Badge = dynamic(() => import('@/components/ui/badge').then(mod => mod.Badge))
 
 interface ProjectDetailsProps {
   project: Project
@@ -51,7 +60,7 @@ const ScreenshotCarousel = ({ screenshots, projectTitle }: { screenshots: string
             >
               {screenshots.map((screenshot, index) => (
                 <div key={index} className="w-full flex-shrink-0">
-                  <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
+                  <MotionDiv whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
                     <Image
                       src={screenshot || "/placeholder.svg"}
                       alt={`${projectTitle} screenshot ${index + 1}`}
@@ -59,7 +68,7 @@ const ScreenshotCarousel = ({ screenshots, projectTitle }: { screenshots: string
                       height={300}
                       className="w-full h-64 object-cover rounded-lg shadow-lg"
                     />
-                  </motion.div>
+                  </MotionDiv>
                 </div>
               ))}
             </div>
@@ -123,7 +132,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
 
         <div className="grid lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-8">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <MotionDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="flex items-center gap-4 mb-4">
                 <Badge variant="outline" className="border-gray-600 text-gray-300">
                   {project.category}
@@ -176,7 +185,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                 height={300}
                 className="w-full h-64 object-cover rounded-lg mb-8 shadow-lg"
               />
-            </motion.div>
+            </MotionDiv>
 
             <Card className="card-hover bg-gray-900/50 border-gray-700">
               <CardHeader>

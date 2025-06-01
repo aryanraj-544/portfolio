@@ -1,15 +1,20 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import dynamic from 'next/dynamic'
 import { Mail, Phone, MapPin, Github, Linkedin, X } from "lucide-react"
 import { contactData } from "@/data/static/contact-data"
 import { linksData } from "@/data/static/links-data"
+
+// Dynamically import UI components
+const Button = dynamic(() => import('@/components/ui/button').then(mod => mod.Button))
+const Input = dynamic(() => import('@/components/ui/input').then(mod => mod.Input))
+const Textarea = dynamic(() => import('@/components/ui/textarea').then(mod => mod.Textarea))
+const Card = dynamic(() => import('@/components/ui/card').then(mod => mod.Card))
+const CardContent = dynamic(() => import('@/components/ui/card').then(mod => mod.CardContent))
+const CardHeader = dynamic(() => import('@/components/ui/card').then(mod => mod.CardHeader))
+const CardTitle = dynamic(() => import('@/components/ui/card').then(mod => mod.CardTitle))
 
 const iconMap = {
   Mail,
