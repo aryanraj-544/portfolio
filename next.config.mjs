@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  //output: 'export',
+  // Removed: output: 'export', - This enables dynamic page generation
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  distDir: 'dist', 
-  basePath: '',
-  assetPrefix: '',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -39,6 +36,18 @@ const nextConfig = {
         tls: false,
       }
     }
+    
+    // Optimize bundle size for Cloudflare Pages
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        maxSize: 20971520, // 20MB
+        maxAsyncSize: 20971520, // 20MB
+        maxInitialSize: 20971520, // 20MB
+      },
+    }
+    
     return config
   },
   async headers() {
