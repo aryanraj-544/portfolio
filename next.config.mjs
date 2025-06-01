@@ -43,14 +43,40 @@ const nextConfig = {
       ...config.optimization,
       splitChunks: {
         chunks: 'all',
-        maxSize: 20971520, // 20MB
-        maxAsyncSize: 20971520, // 20MB
-        maxInitialSize: 20971520, // 20MB
+        maxSize: 20000000, // 20MB
+        minSize: 20000,
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test: /[\\/]node_modules[\\/]/,
+            chunks: 'all',
+            name(module) {
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+              return `npm.${packageName.replace('@', '')}`;
+            },
+            priority: 30,
+          },
+          commons: {
+            name: 'commons',
+            minChunks: 2,
+            priority: 20,
+          },
+        },
       },
+      minimize: true,
     }
     
     return config
   },
+  /*
   async headers() {
     return [
       {
@@ -107,7 +133,7 @@ const nextConfig = {
         permanent: true,
       },
     ]
-  },
+  },*/
 }
 
 export default nextConfig
