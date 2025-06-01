@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Keep dynamic builds for true hybrid approach
+  
+  output: 'export', // Force static export
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   eslint: {

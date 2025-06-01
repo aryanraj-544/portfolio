@@ -7,9 +7,7 @@ import { SkeletonText, SkeletonImage, SkeletonCard } from "@/components/skeleton
 import Link from "next/link"
 import { linksData } from "@/data/static/links-data"
 import type { Metadata } from "next"
-
-// Remove edge runtime for hybrid builds
-// export const runtime = "edge"
+import { notFound } from "next/navigation"
 
 interface ProjectPageProps {
   params: {
@@ -17,22 +15,23 @@ interface ProjectPageProps {
   }
 }
 
-// Generate static params for first 5 projects
+// Generate static params for ALL projects - completely static
 export async function generateStaticParams() {
   const projectSlugs = Object.keys(projectData)
-  const first5Projects = projectSlugs.slice(0, 3) // First 5 projects
   
-  return first5Projects.map((slug) => ({
+  return projectSlugs.map((slug) => ({
     slug: slug,
   }))
 }
 
-// Allow dynamic params for projects beyond the first 5
-export const dynamicParams = true
+// Disable dynamic params - only allow pre-generated pages
+export const dynamicParams = false
 
+// Generate metadata statically
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const project = projectData[params.slug]
 
+  // This should never happen with dynamicParams = false, but keep for safety
   if (!project) {
     return {
       title: "Project Not Found",
@@ -100,49 +99,15 @@ function ProjectDetailsSkeleton() {
   )
 }
 
-function ProjectNotFound() {
-  return (
-    <div className="min-h-screen pt-20 flex items-center justify-center relative bg-3d">
-      {/* Background grid */}
-      <div className="absolute inset-0 grid-background opacity-20 -z-10" />
-
-      <div className="container mx-auto px-4 text-center">
-        <div className="max-w-2xl mx-auto space-y-8">
-          <div className="flex justify-center mb-8">
-            <div className="w-24 h-24 bg-orange-500/20 rounded-full flex items-center justify-center">
-              <AlertTriangle className="w-12 h-12 text-orange-500" />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl font-bold text-glow">Sorry! Page not found</h1>
-            <p className="text-xl text-muted-foreground/90 max-w-lg mx-auto leading-relaxed">
-              It is not in public stage and details will be made available for public soon.
-            </p>
-          </div>
-
-          <Button asChild size="lg" className="group">
-            <Link href="/projects" className="flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Back to Projects
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function ProjectPage({ params }: ProjectPageProps) {
   const project = projectData[params.slug]
 
+  // With dynamicParams = false, this should trigger Next.js 404
+  // But we'll handle it gracefully just in case
   if (!project) {
-    return <ProjectNotFound />
+    notFound()
   }
 
-  return (
-    <Suspense fallback={<ProjectDetailsSkeleton />}>
-      <ProjectDetails project={project} />
-    </Suspense>
-  )
+  // Remove Suspense since everything is static now
+  return <ProjectDetails project={project} />
 }
