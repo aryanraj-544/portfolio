@@ -15,6 +15,9 @@ export const linksData = {
   profileImage:
     "https://zyrbpakftckqpmxzqemn.supabase.co/storage/v1/object/public/portfolio/portfolio_images/profile_image/avatar_image.png",
 
+  // Favicon
+  favicon: "https://zyrbpakftckqpmxzqemn.supabase.co/storage/v1/object/public/portfolio/portfolio_images/profile_image/favicon.png",
+
   // Resume
   resume: "https://zyrbpakftckqpmxzqemn.supabase.co/storage/v1/object/public/portfolio/resume/Aryan_Raj_Resume.pdf",
 
