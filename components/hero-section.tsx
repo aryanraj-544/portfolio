@@ -36,7 +36,7 @@ export function HeroSection() {
                 {heroData.greeting}
               </motion.p>
               <motion.h1
-                className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white"
                 style={{ textShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -45,7 +45,7 @@ export function HeroSection() {
                 {heroData.name}
               </motion.h1>
               <motion.p
-                className="text-xl text-gray-200 max-w-2xl leading-relaxed"
+                className="text-xl text-gray-200 max-w-3xl leading-relaxed"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
@@ -67,7 +67,7 @@ export function HeroSection() {
               >
                 <a href="#contact" className="flex items-center gap-2">
                   {heroData.buttons.contact}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </a>
               </Button>
               <Button
@@ -82,7 +82,7 @@ export function HeroSection() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2"
                 >
-                  <Download className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   {heroData.buttons.resume}
                 </a>
               </Button>
@@ -112,7 +112,7 @@ export function HeroSection() {
                       whileHover={{ scale: 1.2, rotate: 5 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-6 h-6" />
                     </motion.a>
                   </Button>
                 )

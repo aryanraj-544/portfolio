@@ -7,6 +7,7 @@ import { SkeletonText, SkeletonImage, SkeletonCard } from "@/components/skeleton
 import Link from "next/link"
 import { linksData } from "@/data/static/links-data"
 import type { Metadata } from "next"
+export const runtime = "edge"
 
 interface ProjectPageProps {
   params: {
@@ -129,10 +130,4 @@ export default function ProjectPage({ params }: ProjectPageProps) {
       <ProjectDetails project={project} />
     </Suspense>
   )
-}
-
-export function generateStaticParams() {
-  return Object.keys(projectData).map((slug) => ({
-    slug,
-  }))
 }
