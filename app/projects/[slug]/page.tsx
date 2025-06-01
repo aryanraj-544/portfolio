@@ -20,7 +20,7 @@ interface ProjectPageProps {
 // Generate static params for first 5 projects
 export async function generateStaticParams() {
   const projectSlugs = Object.keys(projectData)
-  const first5Projects = projectSlugs.slice(0, 5) // First 5 projects
+  const first5Projects = projectSlugs.slice(0, 3) // First 5 projects
   
   return first5Projects.map((slug) => ({
     slug: slug,
