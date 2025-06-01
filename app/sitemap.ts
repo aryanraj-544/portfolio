@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next"
 import { projectData } from "@/data/static/project-details"
 import { linksData } from "@/data/static/links-data"
+
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = `${linksData.domain_url}`
 

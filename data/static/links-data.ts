@@ -5,7 +5,7 @@ export const linksData = {
   location: "Bengaluru, India",
   locationUrl: "https://www.google.com/maps/place/Bengaluru,+Karnataka/@12.9542802,77.4661309,11z/",
 
-  domain_url : "https://aryan.raj.parges.dev/",
+  domain_url : "https://aryanraj.pages.dev/",
 
   mail_server_url: "https://zyrbpakftckqpmxzqemn.supabase.co/functions/v1/email-handler", 
 

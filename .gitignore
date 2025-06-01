@@ -6,6 +6,9 @@
 #servers
 /mail-server
 
+# Build outputs
+/dist
+
 # next.js
 /.next/
 /out/
