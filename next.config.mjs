@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed: output: 'export', - This enables dynamic page generation
-  distDir: 'dist',
+  // Keep dynamic builds for true hybrid approach
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   eslint: {

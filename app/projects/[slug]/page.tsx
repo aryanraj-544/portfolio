@@ -7,13 +7,28 @@ import { SkeletonText, SkeletonImage, SkeletonCard } from "@/components/skeleton
 import Link from "next/link"
 import { linksData } from "@/data/static/links-data"
 import type { Metadata } from "next"
-export const runtime = "edge"
+
+// Remove edge runtime for hybrid builds
+// export const runtime = "edge"
 
 interface ProjectPageProps {
   params: {
     slug: string
   }
 }
+
+// Generate static params for first 5 projects
+export async function generateStaticParams() {
+  const projectSlugs = Object.keys(projectData)
+  const first5Projects = projectSlugs.slice(0, 5) // First 5 projects
+  
+  return first5Projects.map((slug) => ({
+    slug: slug,
+  }))
+}
+
+// Allow dynamic params for projects beyond the first 5
+export const dynamicParams = true
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const project = projectData[params.slug]
